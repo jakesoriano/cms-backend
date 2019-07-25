@@ -16,16 +16,18 @@ class WebController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct(Page $page, PagePanel $pagePanel, Panel $panel, PanelContent $panelContent) {
+        $this->page = $page;
+        $this->pagePanel = $pagePanel;
+        $this->panel = $panel;
+        $this->panelContent = $panelContent;
+    }
     public function index($slug)
     {
         try {
-            $page = New Page;
-            $pagePanel = new PagePanel;
-            $panel = new Panel;
-            $panelContent = new PanelContent;
-            $data['page'] = $page->find(1)->where('url', '/'.$slug)->first();
-            if(isset($data['page'])) {
-                $data['page_panels'] = $pagePanel->orderBy('sort', 'asc')->where('page_id', $data['page']->id)->get();
+            $data['page'] = $this->page != '[]' ? $this->page->find(1)->where('url', '/'.$slug)->first() : null;
+            if($data['page'] != null) {
+                $data['page_panels'] = $this->pagePanel->orderBy('sort', 'asc')->where('page_id', $data['page']->id)->get();
                 $data['panels'] = [];
                 $data['content'] = [];
                 $data['webview'] = [];
@@ -61,71 +63,5 @@ class WebController extends Controller
         } catch (Exception $x) {
             return x;
         }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Web  $web
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Web $web)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Web  $web
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Web $web)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Web  $web
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Web $web)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Web  $web
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Web $web)
-    {
-        //
     }
 }
