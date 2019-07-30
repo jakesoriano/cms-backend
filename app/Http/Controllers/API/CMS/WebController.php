@@ -25,7 +25,7 @@ class WebController extends Controller
     public function index($slug)
     {
         try {
-            $data['page'] = $this->page != '[]' ? $this->page->find(1)->where('url', '/'.$slug)->first() : null;
+            $data['page'] = $this->page->find(1)->where('url', '/'.$slug)->first();
             if($data['page'] != null) {
                 $data['page_panels'] = $this->pagePanel->orderBy('sort', 'asc')->where('page_id', $data['page']->id)->get();
                 $data['panels'] = [];
